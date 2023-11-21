@@ -14,9 +14,20 @@ class DatabaseSeeder extends Seeder
     {
         \App\Models\User::factory(10)->create();
 
-        \App\Models\User::factory()->create([
-            'name' => 'Test User',
+        \App\Models\Post::factory(10)->create();
+
+        $user = \App\Models\User::factory()->create([
+            'name' => 'MOHAMMED MUSTAFA',
             'email' => 'test@example.com',
+            // posts.test/mohammed-mustafa
+            'slug' => 'mohammed-mustafa',
+            'permission' => 3
         ]);
+
+        $post = \App\Models\Post::factory()->create([
+            'title' => 'learn Laravel',
+            'body' => 'lskdfj lkjsdfj jdf lkjdsfl ldkjf lksdjf',
+        ]);
+        
     }
 }

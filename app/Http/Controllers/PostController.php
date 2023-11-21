@@ -12,7 +12,18 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::all();
+        // foreach ($posts as $post) {
+        //     echo $post->title;
+        //     echo '<br>';
+        // }
+        $posts = Post::where('title', 'Vel unde.')->get();
+
+        // die();
+        // ddd($posts);
+        return view('posts.index', [
+            'posts' => $posts
+        ]);
     }
 
     /**
@@ -20,7 +31,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -36,7 +47,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return view('posts.show', [
+            'post' => $post
+        ]);
     }
 
     /**
@@ -44,7 +57,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('posts.edit', [
+            'post' => $post
+        ]);
     }
 
     /**

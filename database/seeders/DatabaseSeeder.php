@@ -16,6 +16,16 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\Post::factory(10)->create();
 
+        \App\Models\Category::factory()->create([
+            'name' => 'Laravel',
+        ]);
+        \App\Models\Category::factory()->create([
+            'name' => 'PHP',
+        ]);
+        \App\Models\Category::factory()->create([
+            'name' => 'JavaScript',
+        ]);
+
         $user = \App\Models\User::factory()->create([
             'name' => 'MOHAMMED MUSTAFA',
             'email' => 'test@example.com',
@@ -26,7 +36,7 @@ class DatabaseSeeder extends Seeder
 
         $post = \App\Models\Post::factory()->create([
             'title' => 'learn Laravel',
-            'body' => 'lskdfj lkjsdfj jdf lkjdsfl ldkjf lksdjf',
+            'body' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto cupiditate dolorem dolores ipsam ullam exercitationem iure blanditiis sequi voluptatem quae placeat accusamus dolor quos sit adipisci eum, illo molestiae repellendus fuga esse consequuntur velit? Fuga saepe dolor, cupiditate laudantium libero vel illum. Accusantium quo numquam eveniet sunt architecto nulla suscipit, accusamus, dolorem quasi mollitia adipisci aspernatur eligendi odio officia? Nam expedita odit alias ipsum asperiores quam, consequatur, eos accusantium quas dicta ipsam at officiis, ab perspiciatis rem unde a eius ea reiciendis fuga iure excepturi. Sunt ex, dignissimos odio laudantium obcaecati, similique veniam delectus aliquam labore officiis sit error doloribus tempore quis quaerat dolorem, maxime quas unde molestiae commodi distinctio necessitatibus. Dolorem, ipsum magnam! Culpa aliquid, nulla magnam aut praesentium a officiis repudiandae tempore dolorum molestiae similique perferendis, quasi magni labore ratione ipsa totam. Rem sed natus necessitatibus blanditiis, magni inventore dolor recusandae obcaecati, repudiandae ad, nemo minima! Repellendus asperiores corporis, tempora quod vel ipsum nisi eius voluptas mollitia eligendi sapiente possimus, praesentium quo porro illo animi a deserunt vitae rerum doloremque temporibus distinctio? Eligendi natus, commodi adipisci dolores saepe similique repudiandae, quo debitis molestias dicta dignissimos iure, distinctio tempore fugiat ea ut ratione voluptas! Reiciendis voluptatum aspernatur et laudantium.',
         ]);
         
     }

@@ -12,12 +12,40 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+
+        $posts = Post::orderBy('title', 'desc')->get();
+        // $posts = Post::where('body', 'like', '%Rerum%')
+        //             ->orderBy('title', 'desc')
+        //             ->get();
+
+        // Retrienving Single Models
+        // $post = Post::where('body', 'like', '%Rerum%')->first();
+        // $post = Post::firstWhere('body', 'like', '%molestias%');
+        // $post = Post::find(1);
+
+
+        // $post = Post::findOr(11, function() {
+        //     return "No Post Found";
+        // });
+        // $post = Post::findOrFail(11);
+
+        // $post = Post::where('body', 'like', 'abc')->firstOr(function() {
+        //     return "No posts with abc content";
+        // });
+        // $post = Post::where('body', 'like', '%abc%')->firstOrFail();
+
+        
+        // echo $post->id . '<br>';
+        // echo $post->body;
+        // echo '<br>';
+        // var_dump($posts);
+        // die();
+
         // foreach ($posts as $post) {
         //     echo $post->title;
         //     echo '<br>';
         // }
-        $posts = Post::where('title', 'Vel unde.')->get();
+        // $posts = Post::where('title', 'Vel unde.')->get();
 
         // die();
         // ddd($posts);
@@ -39,7 +67,39 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        // var_dump($request);
+        // die();
+
+        $request->validate([
+            'title' => 'required|max:255|unique:posts',
+            'body' => 'required|max:2000',
+            'image' => 'nullable|image|max:2048|mimes:png,jpg,jpeg,gif,svg'
+        ]);
+
+
+        // $post = Post::create([
+        //     'title' => $request->title,
+        //     'body' => $request->body
+        // ]);
+
+        $post = new Post;
+        $post->title = $request->title;
+        $post->body = $request->body;
+        
+
+        if($request->hasFile('image')) {
+            $imageName = time(). '.' . $request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+            $post->image = $imageName;
+        } 
+
+        $post->save();
+
+
+        // return to_route('post.show', ['post' => $post->id]);
+        return redirect()->route('posts.index')
+                ->with('post_created', "The post $post->title has created successfully.");
     }
 
     /**
@@ -67,7 +127,30 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $request->validate([
+            'title' => 'required|max:255',
+            'body' => 'required|max:2000'
+        ]);
+
+        
+
+        if($request->hasFile('image')) {
+            $imageName = time(). '.' . $request->image->extension();
+            $request->image->move(public_path('images'), $imageName);
+            $post->update([
+                'title' => $request->title,
+                'body' => $request->body,
+                'image' => $imageName
+            ]);
+        }  else {
+            $post->update([
+                'title' => $request->title,
+                'body' => $request->body
+            ]);
+        }
+        
+        return to_route('posts.show', $post);
+        
     }
 
     /**
@@ -75,6 +158,8 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+
+        return to_route('posts.index')->with('post_deleted', 'The Post Was Deleted');
     }
 }

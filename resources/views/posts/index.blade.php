@@ -18,20 +18,54 @@
   
     <div class="album py-5 bg-body-tertiary">
       <div class="container">
-  
+
+
+
+
+
+        <a href="{{ route('posts.create') }}" class="btn btn-primary">Add Post</a>
+        
+        <br>
+        <br>
+        @if (session('post_deleted'))
+          <div class="alert alert-danger">
+            <p style="font-weight: bold;">{{ session('post_deleted') }}</p>
+          </div>
+        @endif
+
+        @if (session('post_created'))
+          <div class="alert alert-success">
+            <p style="font-weight: bold;">{{ session('post_created') }}</p>
+          </div>
+        @endif
+
+        <br>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
           @forelse ($posts as $post)
             <div class="col">
                 <div class="card shadow-sm">
+                @if ($post->image)
+                  <img src="{{ asset('images/'. $post->image) }}" alt="{{ $post->title }}">
+                @else
                 <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                @endif
                 <div class="card-body">
+                    <h2>
+                      {{ $post->title }}
+                    </h2>
                     <p class="card-text">
                         {{ $post->body }}
                     </p>
                     <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                        <a href="{{ route('posts.show', $post->id) }}" class="btn btn-sm btn-outline-secondary">View</a>
+                        <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                      
+                        <form action="{{ route('posts.destroy', $post->id) }}" method="post">
+                          @csrf
+                          @method('DELETE')
+                          <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                        </form>
                     </div>
                     <small class="text-body-secondary">9 mins</small>
                     </div>

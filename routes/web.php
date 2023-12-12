@@ -31,6 +31,9 @@ use Illuminate\Support\Facades\Auth;
 // Route::get('/posts/show', [PostController::class, 'show']);
 
 Route::get('/', function() {
+
+    // Auth::loginUsingId(1);
+
     $posts = Post::orderBy('title', 'desc')->get();
     return view('posts.index', [
         'posts' => $posts
@@ -38,6 +41,7 @@ Route::get('/', function() {
 });
 
 Route::resource('posts', PostController::class);
+
 
 Route::get('/manytomany', function() {
     $categories = [1, 2, 3];
@@ -57,7 +61,7 @@ Route::get('/register', function() {
 });
 Route::get('/login', function() {
     return view('auth.login');
-});
+})->name('login');
 
 Route::post('/register', [AuthController::class, 'register'])
         ->name('registerUser');
@@ -65,10 +69,7 @@ Route::post('/login', [AuthController::class, 'login'])
         ->name('loginUser');
 
 
-Route::post('/logout', function () {
-    Auth::logout();
-    return redirect('/');
-})->name('logout');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 
 

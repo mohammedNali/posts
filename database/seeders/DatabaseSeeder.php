@@ -33,7 +33,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
             // posts.test/mohammed-mustafa
             'slug' => 'mohammed-mustafa',
-            'permission' => 3
+            'permission' => 3,
+            'password' => '1234567890'
         ]);
 
         $user->posts()->create([

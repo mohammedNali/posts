@@ -5,7 +5,6 @@
 <div class="container mt-4 mb-4">
 
     @if ($errors->any())
-
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)

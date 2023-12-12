@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class PostController extends Controller
 {
@@ -67,6 +68,13 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        // if(Gate::denies('create')) {
+        //     abort(403, 'You do not have permission');
+        // }
+
+        Gate::inspect('create');
+    
+        // Gate::authorize('create');
 
         // var_dump($request);
         // die();
@@ -77,24 +85,25 @@ class PostController extends Controller
             'image' => 'nullable|image|max:2048|mimes:png,jpg,jpeg,gif,svg'
         ]);
 
-
-        // $post = Post::create([
-        //     'title' => $request->title,
-        //     'body' => $request->body
-        // ]);
-
-        $post = new Post;
-        $post->title = $request->title;
-        $post->body = $request->body;
+        // $post = new Post;
+        // $post->title = $request->title;
+        // $post->body = $request->body;
         
-
+        $imageName = null;
         if($request->hasFile('image')) {
             $imageName = time(). '.' . $request->image->extension();
             $request->image->move(public_path('images'), $imageName);
-            $post->image = $imageName;
+            // $post->image = $imageName;
         } 
+        
 
-        $post->save();
+        $post = $request->user()->posts()->create([
+            'title' => $request->title,
+            'body' => $request->body,
+            'image' => $imageName
+        ]);
+
+        // $post->save();
 
 
         // return to_route('post.show', ['post' => $post->id]);
@@ -117,6 +126,11 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        // if(! Gate::allows('update-post', $post)) {
+        //     abort(403);
+        // }
+        Gate::authorize('update', $post);
+
         return view('posts.edit', [
             'post' => $post
         ]);
@@ -131,8 +145,6 @@ class PostController extends Controller
             'title' => 'required|max:255',
             'body' => 'required|max:2000'
         ]);
-
-        
 
         if($request->hasFile('image')) {
             $imageName = time(). '.' . $request->image->extension();
@@ -158,6 +170,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+
+        Gate::authorize('delete', $post);
+
+
         $post->delete();
 
         return to_route('posts.index')->with('post_deleted', 'The Post Was Deleted');

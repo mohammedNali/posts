@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,6 +38,39 @@ Route::get('/', function() {
 });
 
 Route::resource('posts', PostController::class);
+
+Route::get('/manytomany', function() {
+    $categories = [1, 2, 3];
+
+    $post = new Post();
+    $post->title = 'my fourth post';
+    $post->body = 'this is the body for the fourth post';
+    $post->user_id = 11;
+    $post->save();
+    $post->categories()->attach($categories);
+});
+
+
+// http://posts.test/register
+Route::get('/register', function() {
+    return view('auth.register');
+});
+Route::get('/login', function() {
+    return view('auth.login');
+});
+
+Route::post('/register', [AuthController::class, 'register'])
+        ->name('registerUser');
+Route::post('/login', [AuthController::class, 'login'])
+        ->name('loginUser');
+
+
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/');
+})->name('logout');
+
+
 
 
 

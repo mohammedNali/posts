@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('profiles', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->text('body');
-            // $table->string('post_key'); // 8J2Ika91
-            $table->string('image')->nullable();
-
+            $table->string('avatar')->nullable();
             $table->unsignedBigInteger('user_id');
-            $table->timestamps(); // created_at + updated_at
+            $table->string('website')->nullable();
+            $table->text('bio')->nullable();
+            $table->string('phone')->nullable();
+            $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('profiles');
     }
 };

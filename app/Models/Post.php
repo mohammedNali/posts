@@ -11,10 +11,17 @@ class Post extends Model
 
     // protected $table = 'db_posts';  // posts => db_posts
     // protected $primaryKey = 'post_id'; // id => post_id
-    public $incrementing = false;
     protected $fillable = ['title', 'body', 'image'];
 
 
-    
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+    }
 
 }

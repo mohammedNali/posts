@@ -18,12 +18,10 @@
   
     <div class="album py-5 bg-body-tertiary">
       <div class="container">
-
-
-
-
-
+        {{ __('app_name') }}
+        @auth
         <a href="{{ route('posts.create') }}" class="btn btn-primary">Add Post</a>
+        @endauth  
         
         <br>
         <br>
@@ -59,15 +57,22 @@
                     <div class="d-flex justify-content-between align-items-center">
                     <div class="btn-group">
                         <a href="{{ route('posts.show', $post->id) }}" class="btn btn-sm btn-outline-secondary">View</a>
-                        <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        
+                        {{-- هل يستطيع المستخدم --}}
+                        @can('edit', $post)
+                          <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-sm btn-outline-secondary">Edit</a>  
+                          <form action="{{ route('posts.destroy', $post->id) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                          </form>
+                        @endcan
+                        
+                        
                       
-                        <form action="{{ route('posts.destroy', $post->id) }}" method="post">
-                          @csrf
-                          @method('DELETE')
-                          <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-                        </form>
+                        
                     </div>
-                    <small class="text-body-secondary">9 mins</small>
+                    <small class="text-body-secondary">{{ $post->user->name }}</small>
                     </div>
                 </div>
                 </div>

@@ -6,6 +6,7 @@
 <br>
 <br>
 <div class="container">
+    {{ App::currentLocale() }}
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>

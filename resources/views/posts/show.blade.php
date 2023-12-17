@@ -9,6 +9,9 @@
             <h1>{{ $post->title }}</h1>
         </div>
         <div class="card-body">
+            @if ($post->image)
+                  <img width="25%" src="{{ asset('images/'. $post->image) }}" alt="{{ $post->title }}">
+            @endif
             <p class="card-text">
                 {{ $post->body }}
             </p>

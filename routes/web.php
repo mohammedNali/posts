@@ -98,6 +98,13 @@ Route::group(
 });
 
 
+// Route::get('/dashboard', function ($id) {
+//     return view('layouts.dashboard');
+// })->can("view-dashboard");
+
+// Route::post('/posts', [PostController::class, 'store'])
+//     //    ->can("create")
+//        ->name('posts.store');
 
 
 

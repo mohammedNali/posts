@@ -69,11 +69,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        // if(Gate::denies('create')) {
-        //     abort(403, 'You do not have permission');
-        // }
+        if(Gate::denies('create')) {
+            abort(403, 'You do not have permission');
+        }
 
-        Gate::inspect('create');
+        // $inspect = Gate::inspect('create');
+        // if(!$inspect->allowed()) {
+        //     // echo $inspect->message();
+        //     die();
+        // } 
     
         // Gate::authorize('create');
 

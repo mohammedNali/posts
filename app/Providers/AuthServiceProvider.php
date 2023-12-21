@@ -20,6 +20,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Post::class => PostPolicy::class,
+        // Note::class => NotePolicy::class,
+        // User::class => UserPolicy::class
     ];
 
     /**
@@ -32,8 +34,8 @@ class AuthServiceProvider extends ServiceProvider
         //     return $user->id === $post->user_id;
         // });
 
-        // Gate::define('delete-post', function (User $user, Post $post) {
-        //     return $user->id === $post->user_id;
-        // });
+        Gate::define('view-dashboard', function (User $user, Post $post) {
+            return $user->id === 11;
+        });
     }
 }
